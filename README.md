@@ -14,23 +14,25 @@ Prin restart se repara problema si aplicatia primeste data.
 
 Deoarce s-a mentionat faptul ca id-urile si clasele din css sunt dinamice, m-am legat de elementele html cand am gandit aceasta aplicatie.!
 
---Aici am luat titlul de pe pagina:
-const title = $("a:not(:has(img))")
+      --Aici am luat titlul de pe pagina:
+      const title = $("a:not(:has(img))")
       .map((index, element) => $(element).text())
       .get();
---Aici am luat descrierea de pe pagina:
+      
+      --Aici am luat descrierea de pe pagina:
     const shortDescription = $(".group")
       .map((index, element) => $(element).find("div:not(:has(a))").text())
       .get();
 
---Aici am luat adresa imaginii:
+      --Aici am luat adresa imaginii:
     const image = $("a")
       .map(
         (index, element) =>
           "https://wsa-test.vercel.app" + $(element).find("img").attr("src")
       )
       .get();
---Aici am luat adresa linkurilor din pagina:
+      
+      --Aici am luat adresa linkurilor din pagina:
     const href = $("a:not(:has(img))")
       .map(
         (index, element) =>
@@ -38,10 +40,10 @@ const title = $("a:not(:has(img))")
       )
       .get();
 
---Aici am gandit logica functiei care arata ce sentiment exista in blog..
-Nu am fost prea sigur cum sa abordez aceasta problema, dar m-am gandit ca cel mai simplu ar fi
-sa ma leg de cuvintele din titlu:
-const sentiment = function (titlu) {
+      --Aici am gandit logica functiei care arata ce sentiment exista in blog..
+      Nu am fost prea sigur cum sa abordez aceasta problema, dar m-am gandit ca cel mai simplu ar fi
+      sa ma leg de cuvintele din titlu:
+      const sentiment = function (titlu) {
       if (titlu.includes("Joys") || titlu.includes("Radiant")) {
         return "positive";
       } else if (titlu.includes("Challenges") || titlu.includes("Junk")) {
@@ -61,9 +63,9 @@ const sentiment = function (titlu) {
       const stringArray = string.split(/\s+/);
       return stringArray.length;
     };
-
---Aici am mapat toate datele obtinute mai sus:
-const data = title.map((title, index) => ({
+    
+      --Aici am mapat toate datele obtinute mai sus:
+      const data = title.map((title, index) => ({
       title,
       shortDescription: shortDescription[index],
       image: image[index],
@@ -72,28 +74,28 @@ const data = title.map((title, index) => ({
       words: (words = wordCounter(shortDescription[index])),
     }));
 
---Aici am primit adresa url-ului.
+      --Aici am primit adresa url-ului.
     const newUrl = app.post("/", (req, res) => {
-  const url = req.body.url;
-  res.send(`Data received: ${url}`);
-  console.log(`Received ${url}`);
-  console.log(url);
-  return url;
-});
+        const url = req.body.url;
+        res.send(`Data received: ${url}`);
+        console.log(`Received ${url}`);
+        console.log(url);
+        return url;
+      });
 
---Aceasta este functia care transforma informatiile primite in JSON:
-onst dateScraper = (async () => {
-  const newArray = await scraper("https://wsa-test.vercel.app");
-  console.log(newArray);
-  const jsonArray = JSON.stringify(newArray);
-  console.log(jsonArray);
-  return jsonArray;
-})();
+      --Aceasta este functia care transforma informatiile primite in JSON:
+      onst dateScraper = (async () => {
+        const newArray = await scraper("https://wsa-test.vercel.app");
+        console.log(newArray);
+        const jsonArray = JSON.stringify(newArray);
+        console.log(jsonArray);
+        return jsonArray;
+      })();
 
---Aici trimit catre front informatiile:
-app.get("/", async (req, res) => {
-  const result = await dateScraper;
-  res.send(result);
-});
+      --Aici trimit catre front informatiile:
+      app.get("/", async (req, res) => {
+        const result = await dateScraper;
+        res.send(result);
+      });
     
 
